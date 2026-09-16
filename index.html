@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Placement Cell — Internships, Curriculum & Skill Mapping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1b2a4a;
+    --navy-deep:#131f38;
+    --gold:#c99a3b;
+    --paper:#f6f4ee;
+    --ink:#232833;
+    --line:#d9d3c4;
+    --green:#4c7a5e;
+    --green-bg:#e7efe9;
+    --red:#a8452f;
+    --red-bg:#f4e7e2;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#12161f;
+      --ink:#e7e4da;
+      --line:#333a4a;
+      --navy:#c9d4ec;
+      --navy-deep:#e7e4da;
+      --green-bg:#1c2b22;
+      --red-bg:#2c1d18;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#12161f;
+    --ink:#e7e4da;
+    --line:#333a4a;
+    --navy:#c9d4ec;
+    --navy-deep:#e7e4da;
+    --green-bg:#1c2b22;
+    --red-bg:#2c1d18;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+  }
+  h1,h2,h3,.serif{font-family:'Source Serif 4',Georgia,serif;}
+  a{color:inherit;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
+
+  header.top{
+    border-bottom:1px solid var(--line);
+    padding:22px 0;
+  }
+  .top .wrap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .brand{font-family:'Source Serif 4',serif;font-weight:700;font-size:1.3rem;color:var(--navy);letter-spacing:.01em;}
+  .brand span{color:var(--gold);}
+  nav a{margin-left:22px;text-decoration:none;font-size:.94rem;color:var(--ink);opacity:.75;}
+  nav a:hover{opacity:1;}
+
+  .hero{padding:64px 0 48px;border-bottom:1px solid var(--line);}
+  .hero .kicker{color:var(--gold);font-weight:600;font-size:.95rem;margin-bottom:14px;}
+  .hero h1{font-size:2.6rem;line-height:1.15;font-weight:600;max-width:16ch;margin:0 0 20px;color:var(--navy-deep);}
+  .hero p{max-width:56ch;font-size:1.08rem;color:var(--ink);opacity:.85;margin-bottom:28px;}
+  .hero-stats{display:flex;gap:40px;flex-wrap:wrap;margin-top:36px;}
+  .stat b{display:block;font-family:'Source Serif 4',serif;font-size:2rem;color:var(--navy);}
+  .stat span{font-size:.88rem;opacity:.7;}
+
+  section{padding:56px 0;border-bottom:1px solid var(--line);}
+  section h2{font-size:1.6rem;font-weight:600;color:var(--navy-deep);margin:0 0 8px;}
+  .section-note{opacity:.7;max-width:60ch;margin:0 0 32px;font-size:.98rem;}
+
+  /* Internship listings */
+  .listing{
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap:6px 20px;
+    padding:20px 0;
+    border-top:1px solid var(--line);
+  }
+  .listing:last-child{border-bottom:none;}
+  .listing .role{font-weight:600;font-size:1.05rem;}
+  .listing .org{opacity:.7;font-size:.92rem;}
+  .listing .meta{font-size:.86rem;opacity:.6;grid-column:1;margin-top:2px;}
+  .listing .status{
+    align-self:start;
+    font-size:.78rem;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .status.open{background:var(--green-bg);color:var(--green);}
+  .status.closing{background:var(--red-bg);color:var(--red);}
+
+  /* Skill mapping matrix */
+  .matrix-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+  .matrix-controls button{
+    font-family:inherit;font-size:.86rem;
+    padding:7px 14px;border-radius:20px;
+    border:1px solid var(--line);background:transparent;color:var(--ink);
+    cursor:pointer;
+  }
+  .matrix-controls button.active{background:var(--navy);color:var(--paper);border-color:var(--navy);}
+  table.matrix{width:100%;border-collapse:collapse;font-size:.92rem;}
+  table.matrix th{
+    text-align:left;font-weight:600;color:var(--navy-deep);
+    padding:10px 12px;border-bottom:2px solid var(--navy);
+    font-size:.82rem;
+  }
+  table.matrix td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.matrix tr.hidden{display:none;}
+  .tag{
+    display:inline-block;font-size:.78rem;padding:3px 9px;border-radius:3px;
+    background:var(--green-bg);color:var(--green);margin:2px 4px 2px 0;
+  }
+  .course{font-weight:600;}
+  .dept{opacity:.6;font-size:.82rem;}
+
+  /* Skill self-check tool */
+  .checker{background:var(--navy);color:var(--paper);border-radius:6px;padding:32px;margin-top:36px;}
+  .checker h3{margin:0 0 6px;font-size:1.2rem;}
+  .checker p{opacity:.8;margin:0 0 18px;font-size:.94rem;}
+  .checker label{display:block;font-size:.86rem;margin-bottom:14px;}
+  .checker select{
+    width:100%;margin-top:6px;padding:9px;border-radius:4px;border:1px solid rgba(255,255,255,.3);
+    background:rgba(255,255,255,.08);color:inherit;font-family:inherit;
+  }
+  .checker button.go{
+    margin-top:6px;background:var(--gold);color:var(--navy-deep);border:none;
+    padding:10px 20px;border-radius:4px;font-weight:600;cursor:pointer;font-size:.92rem;
+  }
+  #checkerResult{margin-top:18px;font-size:.92rem;padding-top:16px;border-top:1px solid rgba(255,255,255,.2);display:none;}
+
+  footer{padding:36px 0;font-size:.86rem;opacity:.65;}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  @media(max-width:640px){
+    .hero h1{font-size:2rem;}
+    table.matrix{font-size:.82rem;}
+    table.matrix th:nth-child(3), table.matrix td:nth-child(3){display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">Placement Cell <span>&amp; Skill Map</span></div>
+    <nav>
+      <a href="#internships">Internships</a>
+      <a href="#mapping">Curriculum Map</a>
+      <a href="#checker">Skill Check</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="kicker">Training &amp; Placement Office</div>
+    <h1>Where coursework meets the job you actually apply for.</h1>
+    <p>This portal lines up your academic curriculum against the skills recruiters ask for, lists live internship openings, and shows where the gaps are — before placement season does it for you.</p>
+    <div class="hero-stats">
+      <div class="stat"><b>412</b><span>Students placed, 2025–26</span></div>
+      <div class="stat"><b>86</b><span>Recruiting partners</span></div>
+      <div class="stat"><b>27</b><span>Open internships</span></div>
+      <div class="stat"><b>91%</b><span>Curriculum-to-role skill match</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="internships">
+  <div class="wrap">
+    <h2>Current internship openings</h2>
+    <p class="section-note">Pulled from partner companies this cycle. Apply through your department coordinator before the deadline listed.</p>
+
+    <div class="listing">
+      <div>
+        <div class="role">Software Engineering Intern</div>
+        <div class="org">Kestrel Systems</div>
+        <div class="meta">6 months · Bengaluru · Stipend ₹25,000/mo · Needs: Java, DBMS, DSA</div>
+      </div>
+      <div class="status open">Open</div>
+    </div>
+    <div class="listing">
+      <div>
+        <div class="role">Data Analyst Intern</div>
+        <div class="org">Meridian Retail Analytics</div>
+        <div class="meta">3 months · Remote · Stipend ₹15,000/mo · Needs: SQL, Python, Statistics</div>
+      </div>
+      <div class="status open">Open</div>
+    </div>
+    <div class="listing">
+      <div>
+        <div class="role">Embedded Systems Intern</div>
+        <div class="org">Northbridge Robotics</div>
+        <div class="meta">6 months · Pune · Stipend ₹20,000/mo · Needs: C, Microprocessors, Circuit Theory</div>
+      </div>
+      <div class="status closing">Closes in 3 days</div>
+    </div>
+    <div class="listing">
+      <div>
+        <div class="role">UX Design Intern</div>
+        <div class="org">Fernweh Studio</div>
+        <div class="meta">4 months · Hybrid, Mumbai · Stipend ₹18,000/mo · Needs: Design fundamentals, Figma, HCI</div>
+      </div>
+      <div class="status open">Open</div>
+    </div>
+    <div class="listing">
+      <div>
+        <div class="role">Core Civil — Site Engineering Intern</div>
+        <div class="org">Ashford Infra Projects</div>
+        <div class="meta">6 months · Chennai · Stipend ₹16,000/mo · Needs: Surveying, AutoCAD, Structural Analysis</div>
+      </div>
+      <div class="status closing">Closes in 6 days</div>
+    </div>
+  </div>
+</section>
+
+<section id="mapping">
+  <div class="wrap">
+    <h2>Curriculum → industry skill mapping</h2>
+    <p class="section-note">Every core course mapped to the skill tags recruiters actually search for. Filter by department.</p>
+
+    <div class="matrix-controls" id="deptFilter">
+      <button class="active" data-dept="all">All departments</button>
+      <button data-dept="cse">Computer Science</button>
+      <button data-dept="ece">Electronics</button>
+      <button data-dept="mech">Mechanical</button>
+      <button data-dept="civil">Civil</button>
+    </div>
+
+    <table class="matrix">
+      <thead>
+        <tr><th>Course</th><th>Semester</th><th>Maps to industry skill</th></tr>
+      </thead>
+      <tbody id="matrixBody">
+        <tr data-dept="cse">
+          <td><span class="course">Data Structures &amp; Algorithms</span><div class="dept">Computer Science, Sem 3</div></td>
+          <td>Sem 3</td>
+          <td><span class="tag">Problem solving</span><span class="tag">DSA rounds</span><span class="tag">Java/C++</span></td>
+        </tr>
+        <tr data-dept="cse">
+          <td><span class="course">Database Management Systems</span><div class="dept">Computer Science, Sem 4</div></td>
+          <td>Sem 4</td>
+          <td><span class="tag">SQL</span><span class="tag">Schema design</span><span class="tag">Backend dev</span></td>
+        </tr>
+        <tr data-dept="cse">
+          <td><span class="course">Operating Systems</span><div class="dept">Computer Science, Sem 4</div></td>
+          <td>Sem 4</td>
+          <td><span class="tag">Systems thinking</span><span class="tag">Concurrency</span></td>
+        </tr>
+        <tr data-dept="ece">
+          <td><span class="course">Digital Signal Processing</span><div class="dept">Electronics, Sem 5</div></td>
+          <td>Sem 5</td>
+          <td><span class="tag">MATLAB</span><span class="tag">Embedded R&amp;D</span></td>
+        </tr>
+        <tr data-dept="ece">
+          <td><span class="course">Microprocessors &amp; Microcontrollers</span><div class="dept">Electronics, Sem 4</div></td>
+          <td>Sem 4</td>
+          <td><span class="tag">Embedded C</span><span class="tag">IoT roles</span></td>
+        </tr>
+        <tr data-dept="mech">
+          <td><span class="course">Thermodynamics</span><div class="dept">Mechanical, Sem 3</div></td>
+          <td>Sem 3</td>
+          <td><span class="tag">Core design roles</span><span class="tag">Energy sector</span></td>
+        </tr>
+        <tr data-dept="mech">
+          <td><span class="course">CAD/CAM</span><div class="dept">Mechanical, Sem 5</div></td>
+          <td>Sem 5</td>
+          <td><span class="tag">AutoCAD</span><span class="tag">SolidWorks</span><span class="tag">Manufacturing</span></td>
+        </tr>
+        <tr data-dept="civil">
+          <td><span class="course">Structural Analysis</span><div class="dept">Civil, Sem 4</div></td>
+          <td>Sem 4</td>
+          <td><span class="tag">Site engineering</span><span class="tag">Structural design</span></td>
+        </tr>
+        <tr data-dept="civil">
+          <td><span class="course">Surveying</span><div class="dept">Civil, Sem 3</div></td>
+          <td>Sem 3</td>
+          <td><span class="tag">Field roles</span><span class="tag">Infra projects</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="checker">
+  <div class="wrap">
+    <h2>Where do you stand?</h2>
+    <p class="section-note">Pick your department and target role. This checks it against the curriculum map above and tells you what to shore up before applying.</p>
+
+    <div class="checker">
+      <h3>Quick skill-gap check</h3>
+      <p>Not a substitute for advising — just a fast first read.</p>
+      <label>Department
+        <select id="deptSelect">
+          <option value="cse">Computer Science</option>
+          <option value="ece">Electronics</option>
+          <option value="mech">Mechanical</option>
+          <option value="civil">Civil</option>
+        </select>
+      </label>
+      <label>Target role
+        <select id="roleSelect">
+          <option value="sde">Software Engineering Intern</option>
+          <option value="data">Data Analyst Intern</option>
+          <option value="embedded">Embedded Systems Intern</option>
+          <option value="core">Core / Site Engineering Intern</option>
+        </select>
+      </label>
+      <button class="go" id="checkBtn">Check my fit</button>
+      <div id="checkerResult"></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="border-bottom:none;">
+  <div class="wrap">
+    <h2>Reach the placement cell</h2>
+    <p class="section-note">For internship applications, resume review, or mock interviews, contact your department coordinator or the central office below.</p>
+    <p style="opacity:.85;">
+      Training &amp; Placement Office · Admin Block, Room 214<br>
+      placement-cell@yourcollege.edu.in · Mon–Sat, 9:30am–5:30pm
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Placement Cell &amp; Skill Map — internal student resource</span>
+    <span>Updated for 2026–27 placement cycle</span>
+  </div>
+</footer>
+
+<script>
+  // Department filter for the mapping matrix
+  var buttons = document.querySelectorAll('#deptFilter button');
+  var rows = document.querySelectorAll('#matrixBody tr');
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      buttons.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var dept = btn.getAttribute('data-dept');
+      rows.forEach(function(row){
+        if(dept === 'all' || row.getAttribute('data-dept') === dept){
+          row.classList.remove('hidden');
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Simple skill-gap checker
+  var requirements = {
+    sde: { dept:'cse', need:['Data Structures & Algorithms','Database Management Systems'] },
+    data: { dept:'cse', need:['Database Management Systems'] },
+    embedded: { dept:'ece', need:['Microprocessors & Microcontrollers','Digital Signal Processing'] },
+    core: { dept:'civil', need:['Structural Analysis','Surveying'] }
+  };
+
+  document.getElementById('checkBtn').addEventListener('click', function(){
+    var dept = document.getElementById('deptSelect').value;
+    var role = document.getElementById('roleSelect').value;
+    var req = requirements[role];
+    var result = document.getElementById('checkerResult');
+    result.style.display = 'block';
+
+    if(dept !== req.dept){
+      result.innerHTML = "That role is typically filled from <b>" + req.dept.toUpperCase() +
+        "</b> coursework. You can still apply, but plan on extra prep outside your core curriculum.";
+    } else {
+      result.innerHTML = "Good curriculum overlap. Courses that map directly to this role: <b>" +
+        req.need.join(', ') + "</b>. Make sure these show up clearly on your resume.";
+    }
+  });
+</script>
+
+</body>
+</html>
